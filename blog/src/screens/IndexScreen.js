@@ -3,7 +3,6 @@ import {
   View,
   Text,
   FlatList,
-  Button,
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
@@ -11,34 +10,57 @@ import {
 import { Feather } from "@expo/vector-icons";
 import { Context } from "../context/BlogContext";
 
-const IndexScreen = () => {
-  const { state, addBlogPost, deleteBlogPost } = useContext(Context);
+const IndexScreen = ({ navigation }) => {
+  const { state, deleteBlogPost } = useContext(Context);
 
   return (
     <>
-      <Button title="Add Post" onPress={addBlogPost} />
       <FlatList
         data={state}
         keyExtractor={(blogPost) => blogPost.title}
         renderItem={({ item }) => {
           return (
-            <View style={styles.rowStyle}>
-              <Text style={styles.titleStyle}>
-                {item.id} - {item.title}
-              </Text>
-              <TouchableOpacity
-                onPress={() => {
-                  deleteBlogPost(item.id);
-                }}
-              >
-                <Feather name="trash" style={styles.iconStyle} />
-              </TouchableOpacity>
-            </View>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate("BlogDetail", {
+                  id: item.id,
+                });
+              }}
+            >
+              <View style={styles.rowStyle}>
+                <Text style={styles.titleStyle}>
+                  {item.id} - {item.title}
+                </Text>
+                <TouchableOpacity
+                  onPress={() => {
+                    deleteBlogPost(item.id);
+                  }}
+                >
+                  <Feather name="trash" style={styles.iconStyle} />
+                </TouchableOpacity>
+              </View>
+            </TouchableOpacity>
           );
         }}
       />
     </>
   );
+};
+
+IndexScreen.navigationOptions = ({ navigation }) => {
+  return {
+    headerRight: () => {
+      return (
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate("AddBlog");
+          }}
+        >
+          <Feather name="plus" size={30} />
+        </TouchableOpacity>
+      );
+    },
+  };
 };
 
 const styles = StyleSheet.create({
