@@ -14,7 +14,7 @@
   "author": "mehmet hazman",
   "license": "ISC",
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "json-server": "^0.16.1",
     "ngrok": "^3.2.7"
   }
